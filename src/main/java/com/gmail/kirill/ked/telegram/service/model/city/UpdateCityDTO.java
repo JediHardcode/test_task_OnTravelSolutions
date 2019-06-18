@@ -1,5 +1,7 @@
 package com.gmail.kirill.ked.telegram.service.model.city;
 
+import com.gmail.kirill.ked.telegram.service.validation.UniqueName;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -8,6 +10,7 @@ public class UpdateCityDTO {
     private Long id;
     @NotNull
     @NotEmpty
+    @UniqueName
     private String name;
 
     public Long getId() {
