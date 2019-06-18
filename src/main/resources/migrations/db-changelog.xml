@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="table city" author="kirill.ked@gmail.com">
+        <createTable tableName="T_CITY">
+            <column autoIncrement="true" name="F_ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="F_NAME" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="table attraction" author="kirill.ked@gmail.com">
+        <createTable tableName="T_ATTRACTION">
+            <column autoIncrement="true" name="F_ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="F_NAME" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="F_CITY_ID" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="FK CITY ATTRACTION " author="kirill.ked@gmail.com">
+        <addForeignKeyConstraint baseColumnNames="F_CITY_ID"
+                                 baseTableName="T_ATTRACTION"
+                                 constraintName="FK_F_ATTRACTION_F_CITY"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"
+                                 referencedColumnNames="F_ID"
+                                 referencedTableName="T_CITY"/>
+    </changeSet>
+</databaseChangeLog>
