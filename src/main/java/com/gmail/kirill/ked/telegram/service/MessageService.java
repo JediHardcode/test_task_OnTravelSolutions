@@ -1,5 +1,5 @@
 package com.gmail.kirill.ked.telegram.service;
 
-public interface StringService {
+public interface MessageService {
     String getInfoAboutCity(String messageText);
 }

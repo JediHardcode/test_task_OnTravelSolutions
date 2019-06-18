@@ -3,7 +3,7 @@ package com.gmail.kirill.ked.telegram.service.impl;
 import com.gmail.kirill.ked.telegram.repository.CityRepository;
 import com.gmail.kirill.ked.telegram.repository.model.Attraction;
 import com.gmail.kirill.ked.telegram.repository.model.City;
-import com.gmail.kirill.ked.telegram.service.StringService;
+import com.gmail.kirill.ked.telegram.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ import static com.gmail.kirill.ked.telegram.web.tbot.constant.MessagesConstant.C
 import static com.gmail.kirill.ked.telegram.web.tbot.constant.MessagesConstant.CITY_WITH_ONE_ATTRACTION;
 
 @Service
-public class StringServiceImpl implements StringService {
-    private final static Logger logger = LoggerFactory.getLogger(StringServiceImpl.class);
+public class MessageServiceImpl implements MessageService {
+    private final static Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
     private final int ATTRACTIONS_LIMIT_ONE = 1;
     private final int ATTRACTIONS_LIMIT_TWO = 2;
     private final CityRepository cityRepository;
     private final Random random;
 
-    public StringServiceImpl(CityRepository cityRepository) {
+    public MessageServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
         random = new Random();
     }
@@ -44,20 +44,20 @@ public class StringServiceImpl implements StringService {
     }
 
     private String createInfoMessage(City city) {
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(String.format(CITY_INFO, city.getName()));
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format(CITY_INFO, city.getName()));
         if (city.getAttractions().size() >= ATTRACTIONS_LIMIT_TWO) {
             List<String> randomAttractions = getRandomNames(city.getAttractions().
                     stream()
                     .map(Attraction::getName)
                     .collect(Collectors.toList()));
-            stringBuffer.append(String.format(CITY_WITH_MANY_ATTRACTION, randomAttractions.get(0), randomAttractions.get(1)));
-            return stringBuffer.toString();
+            stringBuilder.append(String.format(CITY_WITH_MANY_ATTRACTION, randomAttractions.get(0), randomAttractions.get(1)));
+            return stringBuilder.toString();
         } else if (city.getAttractions().size() == ATTRACTIONS_LIMIT_ONE) {
-            stringBuffer.append(String.format(CITY_WITH_ONE_ATTRACTION, city.getAttractions().get(0).getName()));
-            return stringBuffer.toString();
+            stringBuilder.append(String.format(CITY_WITH_ONE_ATTRACTION, city.getAttractions().get(0).getName()));
+            return stringBuilder.toString();
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 
     private List<String> getRandomNames(List<String> attractionsNames) {

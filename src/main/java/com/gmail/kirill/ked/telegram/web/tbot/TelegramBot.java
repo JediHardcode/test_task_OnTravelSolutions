@@ -1,6 +1,6 @@
 package com.gmail.kirill.ked.telegram.web.tbot;
 
-import com.gmail.kirill.ked.telegram.service.StringService;
+import com.gmail.kirill.ked.telegram.service.MessageService;
 import com.gmail.kirill.ked.telegram.web.tbot.command.Command;
 import com.gmail.kirill.ked.telegram.web.tbot.command.CommandAssembler;
 import com.gmail.kirill.ked.telegram.web.tbot.properties.BotProperties;
@@ -22,20 +22,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final static Logger logger = LoggerFactory.getLogger(TelegramBot.class);
     private final CommandAssembler commandAssembler;
     private final BotProperties botProperties;
-    private final StringService stringService;
+    private final MessageService messageService;
 
     public TelegramBot(CommandAssembler commandAssembler,
-                       BotProperties botProperties, StringService stringService) {
+                       BotProperties botProperties, MessageService messageService) {
         this.commandAssembler = commandAssembler;
         this.botProperties = botProperties;
-        this.stringService = stringService;
+        this.messageService = messageService;
     }
 
     @PostConstruct
     public void init() {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         try {
-            telegramBotsApi.registerBot(new TelegramBot(commandAssembler, botProperties, stringService));
+            telegramBotsApi.registerBot(new TelegramBot(commandAssembler, botProperties, messageService));
             logger.info("bot successfully register");
         } catch (TelegramApiException e) {
             logger.error(e.getMessage(), e);
@@ -79,6 +79,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 return COMMAND_NOT_EXIST;
             }
         }
-        return stringService.getInfoAboutCity(messageText);
+        return messageService.getInfoAboutCity(messageText);
     }
 }
